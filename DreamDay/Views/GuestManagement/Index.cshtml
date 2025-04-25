@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DreamDay.Models.Guest>
+
+@{
+    ViewData["Title"] = "Manage Guests";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Manage Guests</h1>
+
+    <div class="text-end mb-3">
+        <a class="btn btn-primary" href="/GuestManagement/Create">Add New Guest</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted">No guests added yet.</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>RSVP Status</th>
+                    <th>Meal Preference</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var guest in Model)
+                {
+                    <tr>
+                        <td>@guest.Name</td>
+                        <td>@guest.Email</td>
+                        <td>@guest.RSVPStatus</td>
+                        <td>@guest.MealPreference</td>
+                        <td>
+                            <a class="btn btn-sm btn-warning" href="/GuestManagement/Edit/@guest.GuestId">Edit</a>
+                            <a class="btn btn-sm btn-danger" href="/GuestManagement/Delete/@guest.GuestId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

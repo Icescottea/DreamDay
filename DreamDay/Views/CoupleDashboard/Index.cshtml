@@ -1,0 +1,60 @@
+﻿@model DreamDay.Models.ViewModels.CoupleDashboardViewModel
+@{
+    ViewData["Title"] = "Couple Dashboard";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Welcome to Your Wedding Dashboard</h1>
+
+    <!-- Wedding Overview -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>Wedding Overview</h3>
+
+            @if (Model.Wedding == null)
+            {
+                <p class="text-danger">No wedding information found. Please contact support.</p>
+            }
+            else
+            {
+                <p><strong>Title:</strong> @Model.Wedding.Title</p>
+                <p><strong>Date:</strong> @Model.Wedding.WeddingDate.ToShortDateString()</p>
+                <p><strong>Venue:</strong> @Model.Wedding.Venue</p>
+            }
+        </div>
+    </div>
+
+    <!-- Dashboard Summary -->
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Checklist Progress</h5>
+                    <p>@Model.CompletedTasks / @Model.TotalTasks Tasks Completed</p>
+                    <a class="btn btn-outline-primary" href="/ChecklistManagement">View Checklist</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Guest Summary</h5>
+                    <p>@Model.TotalGuests Invited, @Model.AcceptedGuests Accepted</p>
+                    <a class="btn btn-outline-primary" href="/GuestManagement">Manage Guests</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Budget Summary</h5>
+                    <p>Estimated: $@Model.EstimatedBudget<br>Actual: $@Model.ActualBudget</p>
+                    <a class="btn btn-outline-primary" href="/BudgetManagement">Manage Budget</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

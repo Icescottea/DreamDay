@@ -1,0 +1,42 @@
+﻿@model DreamDay.Models.Guest
+
+@{
+    ViewData["Title"] = "Add New Guest";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Add New Guest</h1>
+
+    <form asp-action="Create" method="post">
+        <input type="hidden" asp-for="WeddingId" value="@ViewBag.WeddingId" />
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Name</label>
+            <input asp-for="Name" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="RSVPStatus" class="form-label">RSVP Status</label>
+            <select asp-for="RSVPStatus" class="form-select">
+                <option value="Pending">Pending</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Declined">Declined</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MealPreference" class="form-label">Meal Preference</label>
+            <input asp-for="MealPreference" class="form-control" />
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Add Guest</button>
+            <a href="/GuestManagement" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

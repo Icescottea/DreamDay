@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace DreamDay.Data.Migrations
+namespace DreamDay.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class SetBudgetItemDecimalPrecision : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
