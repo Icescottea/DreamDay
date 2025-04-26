@@ -27,6 +27,11 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            <div class="mb-3">
+                <label class="form-label">Register As</label><br />
+                <input type="radio" name="Role" value="Couple" checked /> Couple
+                <input type="radio" name="Role" value="Planner" class="ms-3" /> Planner
+            </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>

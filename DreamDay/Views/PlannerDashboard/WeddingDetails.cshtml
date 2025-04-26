@@ -1,0 +1,47 @@
+﻿@model DreamDay.Models.ViewModels.WeddingDetailsViewModel
+
+@{
+    ViewData["Title"] = "Wedding Details";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Wedding Details</h1>
+
+    <h3>@Model.Wedding.Title</h3>
+    <p><strong>Date:</strong> @Model.Wedding.WeddingDate.ToShortDateString()</p>
+    <p><strong>Venue:</strong> @Model.Wedding.Venue</p>
+    <p><strong>Couple:</strong> @Model.Wedding.CoupleId</p>
+
+    <hr>
+
+    <!-- Checklist Progress -->
+    <h4>Checklist Progress</h4>
+    <ul>
+        @foreach (var item in Model.ChecklistItems)
+        {
+            <li>@item.Title - @(item.IsCompleted ? "Completed" : "Pending")</li>
+        }
+    </ul>
+    <a class="btn btn-outline-primary" href="/PlannerChecklist?weddingId=@Model.Wedding.WeddingId">Manage Checklist</a>
+
+    <hr>
+
+    <!-- Guest Summary -->
+    <h4>Guests</h4>
+    <p>Total Guests: @Model.Guests.Count</p>
+    <p>RSVPs Accepted: @Model.Guests.Count(g => g.RSVPStatus == "Accepted")</p>
+    <a class="btn btn-outline-primary" href="/PlannerGuest?weddingId=@Model.Wedding.WeddingId">Manage Guests</a>
+
+    <hr>
+
+    <!-- Budget Summary -->
+    <h4>Budget Summary</h4>
+    <ul>
+        @foreach (var item in Model.BudgetItems)
+        {
+            <li>@item.Category: Estimated: $@item.EstimatedCost, Actual: $@item.ActualCost</li>
+        }
+    </ul>
+
+    <a href="/PlannerDashboard" class="btn btn-secondary">Back to Dashboard</a>
+</div>

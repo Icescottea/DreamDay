@@ -118,6 +118,16 @@ namespace DreamDay.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
+                // Assign role based on selection
+                if (Request.Form["Role"] == "Planner")
+                {
+                    await _userManager.AddToRoleAsync(user, "Planner");
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, "Couple");
+                }
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

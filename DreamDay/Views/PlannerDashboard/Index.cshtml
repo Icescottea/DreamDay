@@ -1,0 +1,40 @@
+﻿@model IEnumerable<DreamDay.Models.Wedding>
+
+@{
+    ViewData["Title"] = "Planner Dashboard";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Assigned Weddings</h1>
+
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted">No weddings assigned yet.</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Wedding Title</th>
+                    <th>Wedding Date</th>
+                    <th>Venue</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var wedding in Model)
+                {
+                    <tr>
+                        <td>@wedding.Title</td>
+                        <td>@wedding.WeddingDate.ToShortDateString()</td>
+                        <td>@wedding.Venue</td>
+                        <td>
+                            <a class="btn btn-sm btn-info" href="/PlannerDashboard/WeddingDetails/@wedding.WeddingId">View Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
