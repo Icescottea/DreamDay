@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Manage Users</h1>
+
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted">No users found.</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Actions (Future)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                        <td>@user.UserName</td>
+                        <td>
+                            <!-- Future: Add actions like Delete, Lock, Reset Password -->
+                            <span class="text-muted">Coming Soon</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

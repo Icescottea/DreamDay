@@ -15,4 +15,9 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Guest> Guests { get; set; }
     public DbSet<ChecklistItem> ChecklistItems { get; set; }
     public DbSet<BudgetItem> BudgetItems { get; set; }
+    public DbSet<WeddingTable> WeddingTables { get; set; }
+    public DbSet<Vendor> Vendors { get; set; }
+    public DbSet<TimelineEvent> TimelineEvents { get; set; }
+
+
 }

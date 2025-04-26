@@ -11,5 +11,10 @@ namespace DreamDay.Models
         public string Email { get; set; }
         public string RSVPStatus { get; set; }
         public string MealPreference { get; set; }
+        public int NumberOfPeople { get; set; } 
+        public int? TableId { get; set; } 
+
+        public WeddingTable Table { get; set; } 
+
     }
 }

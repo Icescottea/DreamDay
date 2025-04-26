@@ -22,6 +22,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Vendor" asp-action="Index">Vendor Catalog</a>
+                        </li>
                         @using Microsoft.AspNetCore.Identity
                         @inject SignInManager<IdentityUser> SignInManager
                         @inject UserManager<IdentityUser> UserManager
@@ -41,6 +44,12 @@
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" href="/PlannerDashboard">Planner Dashboard</a>
+                                </li>
+                            }
+                            @if (roles.Contains("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Dashboard</a>
                                 </li>
                             }
                         }

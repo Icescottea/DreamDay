@@ -4,6 +4,7 @@ using DreamDay.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DreamDay.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250426172328_AddVendorCatalog")]
+    partial class AddVendorCatalog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,35 +117,6 @@ namespace DreamDay.Migrations
                     b.HasIndex("TableId");
 
                     b.ToTable("Guests");
-                });
-
-            modelBuilder.Entity("DreamDay.Models.TimelineEvent", b =>
-                {
-                    b.Property<int>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventId"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EventTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("WeddingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EventId");
-
-                    b.HasIndex("WeddingId");
-
-                    b.ToTable("TimelineEvents");
                 });
 
             modelBuilder.Entity("DreamDay.Models.Vendor", b =>
@@ -443,17 +417,6 @@ namespace DreamDay.Migrations
                         .HasForeignKey("TableId");
 
                     b.Navigation("Table");
-                });
-
-            modelBuilder.Entity("DreamDay.Models.TimelineEvent", b =>
-                {
-                    b.HasOne("DreamDay.Models.Wedding", "Wedding")
-                        .WithMany()
-                        .HasForeignKey("WeddingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Wedding");
                 });
 
             modelBuilder.Entity("DreamDay.Models.WeddingTable", b =>

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<DreamDay.Models.Vendor>
+
+@{
+    ViewData["Title"] = "Manage Vendors";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Manage Vendors</h1>
+
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted">No vendors found.</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price Starting From</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vendor in Model)
+                {
+                    <tr>
+                        <td>@vendor.Name</td>
+                        <td>@vendor.Category</td>
+                        <td>$@vendor.PriceStartingFrom.ToString("F2")</td>
+                        <td>
+                            <a asp-action="DeleteVendor" asp-route-id="@vendor.VendorId" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

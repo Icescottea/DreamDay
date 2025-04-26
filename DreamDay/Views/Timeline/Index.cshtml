@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DreamDay.Models.TimelineEvent>
+
+@{
+    ViewData["Title"] = "Wedding Day Timeline";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Wedding Day Timeline</h1>
+
+    <div class="text-end mb-3">
+        <a class="btn btn-primary" href="/Timeline/Create?weddingId=@ViewBag.WeddingId">Add New Event</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted">No timeline events added yet.</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Time</th>
+                    <th>Event Title</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var e in Model)
+                {
+                    <tr>
+                        <td>@e.EventTime.ToString("hh:mm tt")</td>
+                        <td>@e.Title</td>
+                        <td>@e.Description</td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" href="/Timeline/Edit/@e.EventId">Edit</a>
+                            <a class="btn btn-danger btn-sm" href="/Timeline/Delete/@e.EventId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -1,0 +1,39 @@
+﻿@model DreamDay.Models.TimelineEvent
+
+@{
+    ViewData["Title"] = "Add Timeline Event";
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Add New Timeline Event</h1>
+
+    <form asp-action="Create" method="post">
+        <input type="hidden" name="WeddingId" value="@ViewBag.WeddingId" />
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Event Title</label>
+            <input asp-for="Title" class="form-control" required />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="EventTime" class="form-label">Event Time</label>
+            <input asp-for="EventTime" type="datetime-local" class="form-control" required />
+            <span asp-validation-for="EventTime" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description (Optional)</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
