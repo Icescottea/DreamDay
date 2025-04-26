@@ -5,9 +5,11 @@ using DreamDay.Data;
 using DreamDay.Models.ViewModels;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DreamDay.Controllers
 {
+    [Authorize(Roles = "Planner")]
     public class PlannerDashboardController : Controller
     {
         private readonly ApplicationDbContext _context;

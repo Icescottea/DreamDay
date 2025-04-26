@@ -110,6 +110,7 @@ namespace DreamDay.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -118,52 +119,35 @@ namespace DreamDay.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
-                // Assign role based on selection
-                if (Request.Form["Role"] == "Planner")
-                {
-                    await _userManager.AddToRoleAsync(user, "Planner");
-                }
-                else
-                {
-                    await _userManager.AddToRoleAsync(user, "Couple");
-                }
-
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    // Assign "Couple" role to the newly registered user
-                    await _userManager.AddToRoleAsync(user, "Couple");
-
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    // Assign role based on selection (only once)
+                    if (Request.Form["Role"] == "Planner")
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        await _userManager.AddToRoleAsync(user, "Planner");
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        await _userManager.AddToRoleAsync(user, "Couple");
                     }
+
+                    // Directly log in the user without email confirmation
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    TempData["RegisterSuccess"] = "Registration Successful! Welcome!";
+                    return LocalRedirect(returnUrl);
                 }
+
+                // If errors occurred, add them to ModelState
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // Something went wrong, redisplay the form
             return Page();
         }
 

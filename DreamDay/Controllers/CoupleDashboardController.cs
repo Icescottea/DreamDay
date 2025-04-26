@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using DreamDay.Data;
 using DreamDay.Models;
 using DreamDay.Models.ViewModels;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace DreamDay.Controllers
 {
+    [Authorize(Roles = "Couple")]
     public class CoupleDashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
