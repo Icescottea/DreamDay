@@ -3,75 +3,129 @@
 }
 
 <!-- Hero Section with Full-Screen Background -->
-<div class="hero d-flex align-items-center justify-content-center text-center"
-     style="background: url('/images/wedding-background.jpg') no-repeat center center; background-size: cover; width: 100%; height: 100vh;">
+<div class="hero-section d-flex align-items-center justify-content-center text-center">
     <div class="text-white">
         <h1 class="display-3">Plan Your Perfect Wedding with DreamDay</h1>
         <p class="lead">Your journey to a stress-free wedding starts here.</p>
         <a class="btn btn-primary btn-lg m-2" href="#features">Learn More</a>
-        <a class="btn btn-outline-light btn-lg m-2" href="/Identity/Account/Login">Login</a>
-        <a class="btn btn-light btn-lg m-2" href="/Identity/Account/Register">Register</a>
     </div>
 </div>
 
 
-<!-- Features Section with Icons -->
-<div id="features" class="container text-center my-5">
-    <h2>Our Features</h2>
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <i class="fas fa-users fa-3x mb-3"></i>
-            <h4>Manage Guests</h4>
-            <p>Keep track of your RSVPs and guest preferences effortlessly.</p>
-        </div>
-        <div class="col-md-4">
-            <i class="fas fa-coins fa-3x mb-3"></i>
-            <h4>Track Budgets</h4>
-            <p>Plan and monitor every expense to stay on top of your wedding budget.</p>
-        </div>
-        <div class="col-md-4">
-            <i class="fas fa-handshake fa-3x mb-3"></i>
-            <h4>Collaborate Easily</h4>
-            <p>Work with professional planners to organize your big day seamlessly.</p>
+
+<section class="features-section">
+    <div class="container">
+        <div class="row">
+            <!-- Feature Card 1 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="location-text">Planning</div>
+                    <h3>Organize Your Day</h3>
+                    <p>Use our tools to create your perfect wedding timeline, guest lists, and task trackers with ease.</p>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+
+            <!-- Feature Card 2 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="location-text">Connect</div>
+                    <h3>Find Trusted Vendors</h3>
+                    <p>Search, connect, and book your favorite wedding professionals directly from our platform.</p>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+
+            <!-- Feature Card 3 -->
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="location-text">Celebrate</div>
+                    <h3>Enjoy Every Moment</h3>
+                    <p>From planning to "I do," DreamDay ensures that your journey is smooth, fun, and stress-free.</p>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
 
 <!-- Testimonials Section -->
-<div class="bg-light py-5 text-center">
-    <h2>What Our Users Say</h2>
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-4">
-                <blockquote class="blockquote">
-                    <p>"DreamDay made our wedding planning smooth and joyful!"</p>
-                    <footer class="blockquote-footer">Emily & Daniel</footer>
-                </blockquote>
+<section id="testimonials" class="py-5 text-center" style="background-color: #fbbb03;">
+    <div class="container">
+        <h2 class="testhead">Our Users Love <br> DreamDay <br> (and we love them)</h2>
+
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" style="min-height: 250px; max-width: 700px; margin: 0 auto;">
+                <!-- large height -->
+                <div class="carousel-item active">
+                    <p class="p">
+                        <p class="mb-4">"DreamDay made wedding planning so easy. We loved how everything was in one place, from guest lists to vendor contacts. Their budget tracker helped us stay on top of costs without surprises. I would recommend DreamDay to every couple planning their big day.""</p>
+                        <footer class="user">Emily & Daniel</footer>
+                        <div class="location-text">NAPA VALLEY, CA</div>
+                    </p>
+                </div>
+                <div class="carousel-item">
+                    <p class="p">
+                        <p class="mb-4">"As a professional wedding planner, DreamDay has completely transformed the way I work with my couples. The platform is intuitive, organized, and truly saves me hours of admin time. I especially appreciate how easy it is to manage multiple weddings at once without missing a single detail. DreamDay is now an essential part of my planning process."</p>
+                        <footer class="user">Supuni Herath</footer>
+                        <div class="location-text">CAROLINA BEACH, NC</div>
+                    </p>
+                </div>
+                <div class="carousel-item">
+                    <p class="p">
+                        <p class="mb-4">"DreamDay took so much stress off our shoulders. The checklist kept us organized and ahead of schedule. It truly made the whole experience enjoyable."</p>
+                        <footer class="user">Sophia & Liam</footer>
+                        <div class="location-text">MIAMI, FL</div>
+                    </p>
+                </div>
+                <div class="carousel-item">
+                    <p class="p">
+                        <p class="mb-4">"DreamDay makes collaboration between planners and couples effortless. The shared timelines, budget management, and vendor coordination tools allow me to focus on designing beautiful, personalized events instead of chasing paperwork. I highly recommend DreamDay to any planner who wants to elevate their services."</p>
+                        <footer class="user">Peter Parker</footer>
+                        <div class="location-text">CRENSHAW, CO</div>
+                    </p>
+                </div>
+                <div class="carousel-item">
+                    <p class="p">
+                        <p class="mb-4">"We can't say enough good things about DreamDay. It gave us a clear starting point when we had no idea where to begin. The vendor suggestions were excellent and saved us so much time. We also loved the seating chart tool, which made planning super easy. Our wedding turned out exactly how we hoped, all thanks to DreamDay."</p>
+                        <footer class="user">Binara & Abishek</footer>
+                    <div class="location-text">CHARLESTON, SC</div>
+                    </p>
+                </div>
             </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <a href="/Identity/Account/Register" class="btn btn-primary btn-lg rounded-pill">Sign Up for Free</a>
+        </div>
+    </div>
+</section>
+
+
+<!-- About Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="row align-items-center">
             <div class="col-md-4">
-                <blockquote class="blockquote">
-                    <p>"Highly recommend it to any couple — it saved us weeks of stress!"</p>
-                    <footer class="blockquote-footer">Sophia & Liam</footer>
-                </blockquote>
+                <h2>About DreamDay</h2>
             </div>
-            <div class="col-md-4">
-                <blockquote class="blockquote">
-                    <p>"A planner’s best friend — organized and easy to use."</p>
-                    <footer class="blockquote-footer">Planner Amanda</footer>
-                </blockquote>
+            <div class="col-md-8">
+                <p>
+                    DreamDay brings all your wedding planning needs into a single, elegant platform.
+                    From organizing guests to managing tasks and tracking budgets, we make sure your planning journey is as beautiful as your big day.
+                </p>
             </div>
         </div>
     </div>
-</div>
-
-<!-- About Section -->
-<div class="container text-center my-5">
-    <h2>About DreamDay</h2>
-    <p class="mt-3">
-        DreamDay brings all your wedding planning needs into a single, elegant platform.
-        From organizing guests to managing tasks and tracking budgets, we make sure your planning journey is as beautiful as your big day.
-    </p>
-</div>
+</section>
 
 
 <!-- Smooth Scrolling Script -->

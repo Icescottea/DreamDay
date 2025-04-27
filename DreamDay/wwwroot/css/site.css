@@ -18,5 +18,211 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    overflow-x: hidden;
 }
+
+body, main {
+    margin: 0;
+    padding: 0;
+}
+
+.hero-section {
+    background: url('/images/gradient.png') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-section h1 {
+    padding: 0px 10px 0px 10px;
+    font-family: 'IF Kica', sans-serif;
+    color: black;
+}
+
+.btn-primary {
+    background-color: #ff4ed2; 
+    color: white; 
+    font-weight: bold; 
+    border: none; 
+    border-radius: 999px; 
+    padding: 10px 25px; 
+    font-size: 16px; 
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block;
+    cursor: pointer; 
+}
+
+.btn-primary:hover {
+    background-color: #e043bb; 
+}
+
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:focus:active {
+    background-color: #ff4ed2;
+    color: white;
+    box-shadow: none;
+    outline: none;
+    border: none;
+}
+
+#testimonialCarousel .carousel-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 400px;
+}
+
+#testimonialCarousel p {
+    font-family: 'Ariata Display';
+    font-size: 18px;
+    color: black;
+}
+
+.user {
+    font-family: 'Aptos Display';
+    font-size: 28px; 
+    font-weight: bold; 
+    color: black;
+}
+
+.testhead {
+    font-family: Suntage;
+    color: black;
+}
+
+.location-text {
+    font-family: 'Arial', sans-serif; 
+    font-size: 14px; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+    text-align: center; 
+    color: black; 
+}
+
+.carousel-inner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-item {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.65s ease;
+}
+
+.carousel-item.active {
+    opacity: 1;
+    transform: translateX(0);
+    position: relative;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 2;
+}
+
+/* Move Prev and Next closer to center */
+.carousel-control-prev {
+    left: 10px; 
+}
+
+.carousel-control-next {
+    right: 10px; 
+}
+
+/* Keep Bootstrap arrows, just color them black */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
+    width: 25px;
+    height: 25px;
+}
+
+.about-section {
+    width: 100%;
+    background-color: #a1cdf5; /* FULL blue background */
+    padding: 75px 0; /* Top and bottom space */
+    margin-bottom: -1rem;
+}
+
+.about-section h2 {
+    font-family: Suntage;
+    text-align: left;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.about-section p {
+    font-family: 'Ariata Display';
+    text-align: left;
+    font-size: 18px;
+    max-width: 600px;
+    margin-left: auto;
+}
+
+.features-section {
+    padding: 80px 0;
+    background-color: #FFDAB9; /* Light background */
+}
+
+.feature-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.feature-card h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.feature-card p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.feature-card .btn-primary {
+    margin-bottom: 20px;
+}
+
+.feature-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: auto; /* Push image to bottom */
+}
+
