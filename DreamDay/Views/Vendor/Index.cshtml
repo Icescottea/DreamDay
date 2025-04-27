@@ -5,41 +5,71 @@
     var categories = ViewBag.Categories as List<string>;
     var selectedCategory = ViewBag.SelectedCategory as string;
 }
+<div class="vendor-catalog-page">
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Explore Vendors</h1>
 
-<div class="container my-5">
-    <h1 class="text-center mb-4">Explore Vendors</h1>
-
-    <div class="row mb-4">
-        <div class="col-md-4 offset-md-4">
-            <form method="get" asp-action="Index" asp-controller="Vendor">
-                <select name="category" class="form-select" onchange="this.form.submit()">
-                    <option value="">-- All Categories --</option>
-                    @foreach (var cat in categories)
-                    {
-                        <option value="@cat" selected="@(cat == selectedCategory ? "selected" : null)">
-                            @cat
-                        </option>
-                    }
-                </select>
-            </form>
+        <div class="row mb-4">
+            <div class="col-md-4 offset-md-4">
+                <form method="get" asp-action="Index" asp-controller="Vendor">
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="">  Select Category</option>
+                        @foreach (var cat in categories)
+                        {
+                            <option value="@cat" selected="@(cat == selectedCategory ? "selected" : null)">
+                                @cat
+                            </option>
+                        }
+                    </select>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        @foreach (var vendor in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">@vendor.Name</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@vendor.Category</h6>
-                        <p class="card-text">@vendor.Description</p>
-                        <p><strong>Starting from:</strong> $@vendor.PriceStartingFrom.ToString("F2")</p>
-                        <p><strong>Services:</strong> @vendor.ServicesOffered</p>
-                        <p><strong>Reviews:</strong> @vendor.Reviews</p>
+        <div class="row">
+            @foreach (var vendor in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@vendor.Name</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@vendor.Category</h6>
+
+                            <div class="hover-zone"></div>
+                            <div class="card-description">
+                                @vendor.Description
+                            </div>
+
+                            <p><strong>Starting from:</strong> $@vendor.PriceStartingFrom.ToString("F2")</p>
+                            <p><strong>Services:</strong> @vendor.ServicesOffered</p>
+                            <p><strong>Reviews:</strong> @vendor.Reviews</p>
+                            <p><strong>Available From:</strong> @(vendor.AvailableFrom.HasValue ? vendor.AvailableFrom.Value.ToString("yyyy-MM-dd") : "Not Available")</p>
+                            <p><strong>Available To:</strong> @(vendor.AvailableTo.HasValue ? vendor.AvailableTo.Value.ToString("yyyy-MM-dd") : "Not Available")</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
+
+        <div class="pagination-container text-center mt-5">
+            @{
+                var totalPages = (int)Math.Ceiling((double)ViewBag.TotalVendors / ViewBag.PageSize);
+            }
+
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <a class="btn btn-primary" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, category = ViewBag.SelectedCategory })">
+                    Previous
+                </a>
+            }
+
+            @if (ViewBag.CurrentPage < totalPages)
+            {
+                <a class="btn btn-primary" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, category = ViewBag.SelectedCategory })">
+                    Next
+                </a>
+            }
+        </div>
+
     </div>
 </div>
+

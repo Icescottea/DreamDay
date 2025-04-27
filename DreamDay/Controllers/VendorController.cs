@@ -16,8 +16,10 @@ namespace DreamDay.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string category)
+        public async Task<IActionResult> Index(string category, int page = 1)
         {
+            int pageSize = 6;
+
             var vendorsQuery = _context.Vendors.AsQueryable();
 
             if (!string.IsNullOrEmpty(category))
@@ -25,17 +27,20 @@ namespace DreamDay.Controllers
                 vendorsQuery = vendorsQuery.Where(v => v.Category == category);
             }
 
-            var vendors = await vendorsQuery.ToListAsync();
-            var categories = await _context.Vendors
-                                .Select(v => v.Category)
-                                .Distinct()
-                                .ToListAsync();
+            var totalVendors = await vendorsQuery.CountAsync();
+            var vendors = await vendorsQuery
+                            .Skip((page - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync();
 
-            ViewBag.Categories = categories;
+            ViewBag.TotalVendors = totalVendors;
+            ViewBag.PageSize = pageSize;
+            ViewBag.CurrentPage = page;
+            ViewBag.Categories = await _context.Vendors.Select(v => v.Category).Distinct().ToListAsync();
             ViewBag.SelectedCategory = category;
+
             return View(vendors);
+
         }
-
-
     }
 }
