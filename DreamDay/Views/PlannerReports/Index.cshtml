@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Planner Reports";
+    var popularVenues = ViewBag.PopularVenues as IEnumerable<dynamic>;
+    var vendorAssignments = ViewBag.VendorAssignments as IEnumerable<dynamic>;
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Planner Reports & Insights</h1>
+
+    <div class="card shadow-sm p-4 mb-4">
+        <h4>Popular Venues</h4>
+
+        @if (popularVenues != null && popularVenues.Any())
+        {
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Venue</th>
+                        <th>Number of Weddings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var venue in popularVenues)
+                    {
+                        <tr>
+                            <td>@venue.Venue</td>
+                            <td>@venue.Count</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted">No venue data available.</p>
+        }
+    </div>
+
+    <div class="card shadow-sm p-4 mb-4">
+        <h4>Vendor Assignments</h4>
+
+        @if (vendorAssignments != null && vendorAssignments.Any())
+        {
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Vendor Name</th>
+                        <th>Times Assigned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vendor in vendorAssignments)
+                    {
+                        <tr>
+                            <td>@vendor.VendorName</td>
+                            <td>@vendor.Assignments</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted">No vendor assignment data available.</p>
+        }
+    </div>
+</div>

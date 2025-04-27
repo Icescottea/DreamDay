@@ -18,6 +18,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<WeddingTable> WeddingTables { get; set; }
     public DbSet<Vendor> Vendors { get; set; }
     public DbSet<TimelineEvent> TimelineEvents { get; set; }
-
+    public DbSet<VendorAssignment> VendorAssignments { get; set; }
+    public DbSet<Message> Messages { get; set; }
 
 }

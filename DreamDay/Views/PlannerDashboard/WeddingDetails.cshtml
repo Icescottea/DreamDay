@@ -1,4 +1,4 @@
-﻿@model DreamDay.Models.ViewModels.WeddingDetailsViewModel
+﻿@model DreamDay.Models.Wedding
 
 @{
     ViewData["Title"] = "Wedding Details";
@@ -7,41 +7,57 @@
 <div class="container my-5">
     <h1 class="text-center mb-4">Wedding Details</h1>
 
-    <h3>@Model.Wedding.Title</h3>
-    <p><strong>Date:</strong> @Model.Wedding.WeddingDate.ToShortDateString()</p>
-    <p><strong>Venue:</strong> @Model.Wedding.Venue</p>
-    <p><strong>Couple:</strong> @Model.Wedding.CoupleId</p>
+    <div class="card shadow-sm p-4 mb-4">
+        <h4>Wedding Information</h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Couple ID:</strong> @Model.CoupleId</li>
+            <li class="list-group-item"><strong>Wedding Date:</strong> @Model.WeddingDate.ToString("yyyy-MM-dd")</li>
+            <li class="list-group-item"><strong>Venue:</strong> @(Model.Venue ?? "Not Assigned")</li>
+        </ul>
+    </div>
 
-    <hr>
+    <div class="card shadow-sm p-4 mb-4">
+        <h4>Assigned Vendors</h4>
 
-    <!-- Checklist Progress -->
-    <h4>Checklist Progress</h4>
-    <ul>
-        @foreach (var item in Model.ChecklistItems)
+        @if (ViewBag.AssignedVendors != null && ((List<DreamDay.Models.VendorAssignment>)ViewBag.AssignedVendors).Any())
         {
-            <li>@item.Title - @(item.IsCompleted ? "Completed" : "Pending")</li>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Vendor Name</th>
+                        <th>Category</th>
+                        <th>Assigned Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var assignment in (List<DreamDay.Models.VendorAssignment>)ViewBag.AssignedVendors)
+                    {
+                        <tr>
+                            <td>@assignment.Vendor.Name</td>
+                            <td>@assignment.Vendor.Category</td>
+                            <td>@assignment.AssignedDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         }
-    </ul>
-    <a class="btn btn-outline-primary" href="/PlannerChecklist?weddingId=@Model.Wedding.WeddingId">Manage Checklist</a>
-
-    <hr>
-
-    <!-- Guest Summary -->
-    <h4>Guests</h4>
-    <p>Total Guests: @Model.Guests.Count</p>
-    <p>RSVPs Accepted: @Model.Guests.Count(g => g.RSVPStatus == "Accepted")</p>
-    <a class="btn btn-outline-primary" href="/PlannerGuest?weddingId=@Model.Wedding.WeddingId">Manage Guests</a>
-
-    <hr>
-
-    <!-- Budget Summary -->
-    <h4>Budget Summary</h4>
-    <ul>
-        @foreach (var item in Model.BudgetItems)
+        else
         {
-            <li>@item.Category: Estimated: $@item.EstimatedCost, Actual: $@item.ActualCost</li>
+            <p class="text-muted">No vendors assigned yet.</p>
         }
-    </ul>
+    </div>
 
-    <a href="/PlannerDashboard" class="btn btn-secondary">Back to Dashboard</a>
+    <div class="text-center">
+        <a asp-controller="PlannerGuest" asp-action="Index" asp-route-weddingId="@Model.WeddingId" class="btn btn-primary m-2">Manage Guests</a>
+
+        <a asp-controller="PlannerChecklist" asp-action="Index" asp-route-weddingId="@Model.WeddingId" class="btn btn-primary m-2">Manage Checklist</a>
+
+        <a class="btn btn-secondary m-2 disabled">Manage Vendors (Coming Soon)</a>
+
+        <a class="btn btn-secondary m-2 disabled">Message Couple (Coming Soon)</a>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a asp-controller="PlannerDashboard" asp-action="Index" class="btn btn-outline-secondary">Back to Dashboard</a>
+    </div>
 </div>

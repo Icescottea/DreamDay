@@ -14,6 +14,9 @@ namespace DreamDay.Models
         [Required]
         public string Category { get; set; } // Venue, Photographer, Florist, etc.
 
+        public DateTime? AvailableFrom { get; set; }
+        public DateTime? AvailableTo { get; set; }
+
         [Required]
         public string Description { get; set; }
 

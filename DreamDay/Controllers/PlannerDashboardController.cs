@@ -38,7 +38,7 @@ namespace DreamDay.Controllers
         }
 
         // GET: PlannerDashboard/WeddingDetails/5
-        public async Task<IActionResult> WeddingDetails(int? id)
+        public async Task<IActionResult> WeddingDetails(int id)
         {
             if (id == null)
             {
@@ -47,11 +47,6 @@ namespace DreamDay.Controllers
 
             var wedding = await _context.Weddings
                 .FirstOrDefaultAsync(w => w.WeddingId == id);
-
-            if (wedding == null)
-            {
-                return NotFound();
-            }
 
             var checklistItems = await _context.ChecklistItems
                 .Where(c => c.WeddingId == wedding.WeddingId)
@@ -73,7 +68,14 @@ namespace DreamDay.Controllers
                 BudgetItems = budgetItems
             };
 
-            return View(model);
+            var assignedVendors = await _context.VendorAssignments
+                .Include(va => va.Vendor)
+                .Where(va => va.WeddingId == id)
+                .ToListAsync();
+
+            ViewBag.AssignedVendors = assignedVendors;
+
+            return View(wedding);
         }
 
     }
