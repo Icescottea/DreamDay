@@ -4,10 +4,9 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
+<div class="register-page">
+    <div class="register-card">
+        <h1 class="register-heading">@ViewData["Title"]</h1>
         @if (TempData["RegisterSuccess"] != null)
         {
             <div class="alert alert-success">
@@ -21,7 +20,6 @@
             </div>
         }
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
@@ -46,7 +44,7 @@
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
-</div>
+</div>>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

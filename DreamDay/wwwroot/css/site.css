@@ -339,6 +339,103 @@ p {
     background-color: #ee7a23;
 }
 
+/* Register page*/
+/* Full page gradient background */
+.register-page {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #ffffff, #ffd190); /* White to Cream */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    margin-bottom: -2.5rem;
+}
+
+/* Card container */
+.register-card {
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+}
+
+/* Heading styling */
+.register-heading {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+}
+
+.register-page .btn-primary {
+    background-color: #ff9b42
+}
+
+.register-card .form-control {
+  border: none; /* Remove the gray border */
+  border-radius: 12px; /* Make corners more rounded */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional: add soft glow */
+}
+
+.register-card .form-control:focus {
+  border: none; /* Still no border on focus */
+  box-shadow: 0 0 8px rgba(27, 110, 194, 0.5); /* Optional: blue glow when typing */
+}
+
+/* Login page */
+/* Full page gradient background */
+.login-page {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #ffffff, #ffd190); /* White to Cream */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    margin-bottom: -2.5rem;
+}
+
+/* Card container */
+.login-card {
+  background-color: rgba(255, 255, 255, 0.6); /* Transparent white */
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+/* Heading styling */
+.login-heading {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Inputs: no borders, rounded */
+.login-card .form-control {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-card .form-control:focus {
+  border: none;
+  box-shadow: 0 0 8px rgba(27, 110, 194, 0.5);
+}
+
+.login-page .btn-primary {
+    background-color: #ff9b42
+}
+
+.login-card .mt-3{
+    text-align: center;
+}
+
 
 
 
