@@ -4,6 +4,7 @@ using DreamDay.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DreamDay.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250427194837_AddVendorFieldsToChecklistItem")]
+    partial class AddVendorFieldsToChecklistItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,18 +178,10 @@ namespace DreamDay.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("VendorArrivalTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("VendorId")
-                        .HasColumnType("int");
-
                     b.Property<int>("WeddingId")
                         .HasColumnType("int");
 
                     b.HasKey("EventId");
-
-                    b.HasIndex("VendorId");
 
                     b.HasIndex("WeddingId");
 
@@ -536,17 +531,11 @@ namespace DreamDay.Migrations
 
             modelBuilder.Entity("DreamDay.Models.TimelineEvent", b =>
                 {
-                    b.HasOne("DreamDay.Models.Vendor", "Vendor")
-                        .WithMany()
-                        .HasForeignKey("VendorId");
-
                     b.HasOne("DreamDay.Models.Wedding", "Wedding")
                         .WithMany()
                         .HasForeignKey("WeddingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Vendor");
 
                     b.Navigation("Wedding");
                 });

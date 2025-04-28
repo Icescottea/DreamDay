@@ -20,9 +20,11 @@
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
-                    <th>Time</th>
+                    <th>Event Time</th>
                     <th>Event Title</th>
                     <th>Description</th>
+                    <th>Vendor</th> <!-- New -->
+                    <th>Vendor Arrival</th> <!-- New -->
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -33,6 +35,26 @@
                         <td>@e.EventTime.ToString("hh:mm tt")</td>
                         <td>@e.Title</td>
                         <td>@e.Description</td>
+                        <td>
+                            @if (e.Vendor != null)
+                            {
+                                @e.Vendor.Name
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+                        <td>
+                            @if (e.VendorArrivalTime.HasValue)
+                            {
+                                @e.VendorArrivalTime.Value.ToString("hh:mm tt")
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
                         <td>
                             <a class="btn btn-warning btn-sm" href="/Timeline/Edit/@e.EventId">Edit</a>
                             <a class="btn btn-danger btn-sm" href="/Timeline/Delete/@e.EventId">Delete</a>

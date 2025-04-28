@@ -37,14 +37,14 @@ namespace DreamDay.Controllers
             }
 
             var checklistItems = await _context.ChecklistItems
+                .Include(c => c.Vendor)
                 .Where(c => c.WeddingId == wedding.WeddingId)
                 .ToListAsync();
 
-            return View(checklistItems);
+            return View("~/Views/ChecklistManagement/Index.cshtml", checklistItems);
         }
 
-        // GET: ChecklistManagement/Create
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int? weddingId)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -53,30 +53,68 @@ namespace DreamDay.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var wedding = await _context.Weddings.FirstOrDefaultAsync(w => w.CoupleId == user.Id);
+            Wedding wedding = null;
+
+            if (weddingId.HasValue)
+            {
+                wedding = await _context.Weddings.FirstOrDefaultAsync(w => w.WeddingId == weddingId.Value);
+            }
+            else
+            {
+                wedding = await _context.Weddings.FirstOrDefaultAsync(w => w.CoupleId == user.Id);
+            }
 
             if (wedding == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
 
             ViewBag.WeddingId = wedding.WeddingId;
+
+            ViewBag.VendorCategories = _context.Vendors
+                .Select(v => v.Category)
+                .Distinct()
+                .ToList();
+
             return View();
         }
+
+
 
         // POST: ChecklistManagement/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ChecklistItem item)
+        public async Task<IActionResult> Create(ChecklistItem checklistItem)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(item);
+                _context.Add(checklistItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(item);
+
+            // Repopulate Vendor Categories for dropdown
+            ViewBag.VendorCategories = _context.Vendors
+                .Select(v => v.Category)
+                .Distinct()
+                .ToList();
+
+            // Extra: If VendorCategory already selected, you can reload vendors matching that
+            if (!string.IsNullOrEmpty(checklistItem.VendorCategory))
+            {
+                ViewBag.InitialVendors = await _context.Vendors
+                    .Where(v => v.Category == checklistItem.VendorCategory)
+                    .ToListAsync();
+            }
+            else
+            {
+                ViewBag.InitialVendors = new List<Vendor>();
+            }
+
+            return View(checklistItem);
         }
+
+
 
         // GET: ChecklistManagement/MarkComplete/5
         public async Task<IActionResult> MarkComplete(int? id)
@@ -115,8 +153,18 @@ namespace DreamDay.Controllers
                 return NotFound();
             }
 
+            ViewBag.VendorCategories = await _context.Vendors
+                .Select(v => v.Category)
+                .Distinct()
+                .ToListAsync();
+
+            ViewBag.InitialVendors = await _context.Vendors
+                .Where(v => v.Category == item.VendorCategory)
+                .ToListAsync();
+
             return View(item);
         }
+
 
         // POST: ChecklistManagement/Edit/5
         [HttpPost]
@@ -178,6 +226,16 @@ namespace DreamDay.Controllers
             _context.ChecklistItems.Remove(item);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> GetVendorsByCategory(string category)
+        {
+            var vendors = await _context.Vendors
+                .Where(v => v.Category == category)
+                .Select(v => new { v.VendorId, v.Name })
+                .ToListAsync();
+
+            return Json(vendors);
         }
 
     }

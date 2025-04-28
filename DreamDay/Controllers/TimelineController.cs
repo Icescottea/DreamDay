@@ -27,6 +27,7 @@ namespace DreamDay.Controllers
             if (wedding == null) return RedirectToAction("Index", "Home");
 
             var events = await _context.TimelineEvents
+                .Include(t => t.Vendor)
                 .Where(e => e.WeddingId == wedding.WeddingId)
                 .OrderBy(e => e.EventTime)
                 .ToListAsync();
@@ -35,9 +36,10 @@ namespace DreamDay.Controllers
             return View(events);
         }
 
-        public IActionResult Create(int weddingId)
+        public async Task<IActionResult> Create(int weddingId)
         {
             ViewBag.WeddingId = weddingId;
+            ViewBag.Vendors = await _context.Vendors.ToListAsync();
             return View();
         }
 
@@ -51,6 +53,9 @@ namespace DreamDay.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.WeddingId = timelineEvent.WeddingId;
+            ViewBag.Vendors = await _context.Vendors.ToListAsync();
             return View(timelineEvent);
         }
 
@@ -61,6 +66,8 @@ namespace DreamDay.Controllers
             var timelineEvent = await _context.TimelineEvents.FindAsync(id);
             if (timelineEvent == null) return NotFound();
 
+            ViewBag.WeddingId = timelineEvent.WeddingId;
+            ViewBag.Vendors = await _context.Vendors.ToListAsync();
             return View(timelineEvent);
         }
 
@@ -76,6 +83,9 @@ namespace DreamDay.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.WeddingId = timelineEvent.WeddingId;
+            ViewBag.Vendors = await _context.Vendors.ToListAsync();
             return View(timelineEvent);
         }
 
@@ -83,7 +93,10 @@ namespace DreamDay.Controllers
         {
             if (id == null) return NotFound();
 
-            var timelineEvent = await _context.TimelineEvents.FindAsync(id);
+            var timelineEvent = await _context.TimelineEvents
+                .Include(t => t.Vendor)
+                .FirstOrDefaultAsync(t => t.EventId == id);
+
             if (timelineEvent == null) return NotFound();
 
             return View(timelineEvent);

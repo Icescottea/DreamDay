@@ -21,12 +21,13 @@ namespace DreamDay.Controllers
         // View Checklist
         public async Task<IActionResult> Index(int weddingId)
         {
-            var checklist = await _context.ChecklistItems
+            var checklistItems = await _context.ChecklistItems
+                .Include(c => c.Vendor)
                 .Where(c => c.WeddingId == weddingId)
                 .ToListAsync();
 
             ViewBag.WeddingId = weddingId;
-            return View(checklist);
+            return View("~/Views/ChecklistManagement/Index.cshtml", checklistItems);
         }
 
         // Mark Complete

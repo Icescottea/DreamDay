@@ -59,5 +59,50 @@ namespace DreamDay.Controllers
 
             return View(model);
         }
+
+        // POST: CoupleDashboard/SendMessage
+        [HttpPost]
+        public async Task<IActionResult> SendMessage([FromBody] PlannerDashboardController.MessageInputModel input)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null) return Unauthorized();
+
+            var wedding = await _context.Weddings.FirstOrDefaultAsync(w => w.WeddingId == input.WeddingId);
+
+            if (wedding == null) return NotFound();
+
+            var message = new Message
+            {
+                WeddingId = input.WeddingId,
+                SenderId = user.Id,
+                ReceiverId = (user.Id == wedding.CoupleId) ? wedding.PlannerId : wedding.CoupleId,
+                Content = input.Content,
+                SentDate = DateTime.Now
+            };
+
+            _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        // GET: CoupleDashboard/GetMessages
+        public async Task<IActionResult> GetMessages(int weddingId)
+        {
+            var messages = await _context.Messages
+                .Where(m => m.WeddingId == weddingId)
+                .OrderBy(m => m.SentDate)
+                .Select(m => new
+                {
+                    senderEmail = _context.Users.FirstOrDefault(u => u.Id == m.SenderId).Email,
+                    content = m.Content,
+                    sentTime = m.SentDate.ToString("g")
+                })
+                .ToListAsync();
+
+            return Json(messages);
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DreamDay.Models
 {
@@ -18,5 +19,11 @@ namespace DreamDay.Models
         public string Description { get; set; } // Optional additional details
 
         public Wedding Wedding { get; set; } // Navigation property
+        public int? VendorId { get; set; }            // nullable Vendor reference
+
+        public DateTime? VendorArrivalTime { get; set; } // nullable vendor arrival time
+
+        [ForeignKey("VendorId")]
+        public Vendor Vendor { get; set; }
     }
 }
