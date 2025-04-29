@@ -651,3 +651,85 @@ p {
     border-radius: 8px;
     border: 1px solid #ccc;
 }
+
+/* Guest Management Page Specific */
+/* Layout fix for Guest Management */
+.guest-management-page {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 160px); /* adjust if your header is larger */
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+/* Push table to fill height */
+.guest-management-page table {
+    flex: 1 0 auto;
+}
+
+.guest-management-page .btn-assign {
+    background-color: #ffe6b3;
+    border: none;
+    color: black;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.guest-management-page .btn-assign:hover {
+    background-color: #ffcc66;
+    color: black;
+}
+
+.wedding-info-card {
+    background: linear-gradient(to bottom right, #f9f9f9, #ffe6e6);
+    border-radius: 16px;
+    border: none;
+    padding: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wedding-info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Admin Dashboard Page Specific */
+.admin-dashboard-page {
+    min-height: calc(100vh - 160px); /* Adjust for header/footer height */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+/* Optional: Style the admin cards to match other pages */
+.admin-dashboard-page .card {
+    background: linear-gradient(to bottom right, #ffffff, #fff0e1);
+    border: none;
+    border-radius: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-dashboard-page .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Optional: Consistent button styles */
+.admin-dashboard-page .btn-primary {
+    background-color: #ffe6b3;
+    border: none;
+    color: black;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.admin-dashboard-page .btn-primary:hover {
+    background-color: #ffcc66;
+    color: black;
+}

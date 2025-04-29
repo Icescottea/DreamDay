@@ -49,9 +49,7 @@ namespace DreamDay.Controllers
             var user = await _userManager.GetUserAsync(User);
 
             if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            { return RedirectToAction("Login", "Account"); }
 
             Wedding wedding = null;
 

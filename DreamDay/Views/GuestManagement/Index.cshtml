@@ -5,7 +5,7 @@
     var tables = ViewBag.Tables as List<DreamDay.Models.WeddingTable>;
 }
 
-<div class="container my-5">
+<div class="container my-5 guest-management-page">
     <h1 class="text-center mb-4">Manage Guests and Seating</h1>
 
     <div class="text-end mb-3">
@@ -24,52 +24,51 @@
                 @TempData["ErrorMessage"]
             </div>
         }
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>RSVP</th>
-                    <th>Number of People</th>
-                    <th>Assigned Table</th>
-                    <th>Actions</th>
-                    <th>Meal Preference</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var guest in Model)
-            {
-                <tr>
-                    <td>@guest.Name</td>
-                    <td>@guest.Email</td>
-                    <td>@guest.RSVPStatus</td>
-                    <td>@guest.NumberOfPeople</td>
-                    <td>@guest.MealPreference</td>
-                    <td>
-                        <form asp-action="AssignTable" method="post" style="display:inline;">
-                            <input type="hidden" name="guestId" value="@guest.GuestId" />
-                            <select name="tableId" class="form-select form-select-sm d-inline w-auto">
-                                <option value="">Unassigned</option>
-                                    @foreach (var table in tables)
-                                    {
-                                        <option value="@table.TableId" selected="@(guest.TableId == table.TableId ? "selected" : null)">
-                                            @table.TableName
-                                        </option>
-                                    }
-                            </select>
-                            <button type="submit" class="btn btn-primary btn-sm ms-1">Assign</button>
-                        </form>
-                    </td>
-                    <td>
-                        <td>
-                            <a class="btn btn-warning btn-sm" href="/GuestManagement/Edit/@guest.GuestId">Edit</a>
-                            <a class="btn btn-danger btn-sm" href="/GuestManagement/Delete/@guest.GuestId">Delete</a>
-                        </td>
-
-                    </td>
-                </tr>
-            }
-        </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>RSVP</th>
+                        <th>Number of People</th>
+                        <th>Meal Preference</th>
+                        <th>Assigned Table</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var guest in Model)
+                    {
+                        <tr>
+                            <td>@guest.Name</td>
+                            <td>@guest.Email</td>
+                            <td>@guest.RSVPStatus</td>
+                            <td>@guest.NumberOfPeople</td>
+                            <td>@guest.MealPreference</td>
+                            <td>
+                                <form asp-action="AssignTable" method="post" class="d-flex justify-content-center align-items-center gap-2">
+                                    <input type="hidden" name="guestId" value="@guest.GuestId" />
+                                    <select name="tableId" class="form-select form-select-sm w-auto">
+                                        <option value="">Unassigned</option>
+                                        @foreach (var table in tables)
+                                        {
+                                            <option value="@table.TableId" selected="@(guest.TableId == table.TableId ? "selected" : null)">
+                                                @table.TableName
+                                            </option>
+                                        }
+                                    </select>
+                                    <button type="submit" class="btn btn-assign btn-sm">Assign</button>
+                                </form>
+                            </td>
+                            <td>
+                                <a class="btn btn-warning btn-sm" href="/GuestManagement/Edit/@guest.GuestId">Edit</a>
+                                <a class="btn btn-danger btn-sm" href="/GuestManagement/Delete/@guest.GuestId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 </div>

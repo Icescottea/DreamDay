@@ -23,29 +23,33 @@ namespace DreamDay.Controllers
             // Popular Venues
             var popularVenues = await _context.Weddings
                 .GroupBy(w => w.Venue)
-                .Where(g => g.Key != null)
-                .Select(g => new
-                {
-                    Venue = g.Key,
-                    Count = g.Count()
-                })
+                .Select(g => new { Venue = g.Key, Count = g.Count() })
                 .OrderByDescending(g => g.Count)
+                .Take(5)
                 .ToListAsync();
 
-            // Vendor Assignments
-            var vendorAssignments = await _context.VendorAssignments
-                .Include(va => va.Vendor)
-                .GroupBy(va => va.Vendor.Name)
+            // Average Budgets
+            var averageBudget = await _context.BudgetItems
+                .GroupBy(b => 1)
                 .Select(g => new
                 {
-                    VendorName = g.Key,
-                    Assignments = g.Count()
+                    AverageEstimated = g.Average(b => (decimal?)b.EstimatedCost) ?? 0,
+                    AverageActual = g.Average(b => (decimal?)b.ActualCost) ?? 0
                 })
+                .FirstOrDefaultAsync();
+
+            // Vendor Performance
+            var vendorPerformance = await _context.VendorAssignments
+                .Include(v => v.Vendor)
+                .GroupBy(va => va.Vendor.Name)
+                .Select(g => new { VendorName = g.Key, Assignments = g.Count() })
                 .OrderByDescending(g => g.Assignments)
+                .Take(5)
                 .ToListAsync();
 
             ViewBag.PopularVenues = popularVenues;
-            ViewBag.VendorAssignments = vendorAssignments;
+            ViewBag.AverageBudget = averageBudget;
+            ViewBag.VendorPerformance = vendorPerformance;
 
             return View();
         }
