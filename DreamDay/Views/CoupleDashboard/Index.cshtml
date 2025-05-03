@@ -105,47 +105,52 @@
 </div>
 
 @section Scripts {
-<script>
-    function toggleMessagePanel() {
-        const panel = document.getElementById('messagePanel');
-        if (panel.style.display === "none") {
-            panel.style.display = "block";
-            loadMessages();
-        } else {
-            panel.style.display = "none";
+    <script>
+        function toggleMessagePanel() {
+            const panel = document.getElementById('messagePanel');
+            if (panel.style.display === "none") {
+                panel.style.display = "block";
+                loadMessages();
+            } else {
+                panel.style.display = "none";
+            }
         }
-    }
 
-    async function loadMessages() {
-        const weddingId = @Model.Wedding.WeddingId;
-        const response = await fetch('/CoupleDashboard/GetMessages?weddingId=' + weddingId);
-        const messages = await response.json();
-        const list = document.getElementById('messageList');
-        list.innerHTML = '';
-        messages.forEach(m => {
-            const div = document.createElement('div');
-            div.classList.add('mb-2');
-            div.innerHTML = `<strong>${m.senderEmail}:</strong> ${m.content} <br/><small class="text-muted">${m.sentTime}</small>`;
-            list.appendChild(div);
-        });
-    }
+        async function loadMessages() {
+            const weddingId = @((Model.Wedding != null) ? Model.Wedding.WeddingId.ToString() : "null");
+            if (weddingId === "null") return;
 
-    async function sendMessage(event) {
-        event.preventDefault();
-        const content = document.getElementById('messageContent').value;
-        const weddingId = @Model.Wedding.WeddingId;
-
-        const response = await fetch('/CoupleDashboard/SendMessage', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ weddingId, content })
-        });
-
-        if (response.ok) {
-            document.getElementById('messageContent').value = '';
-            loadMessages();
+            const response = await fetch('/CoupleDashboard/GetMessages?weddingId=' + weddingId);
+            const messages = await response.json();
+            const list = document.getElementById('messageList');
+            list.innerHTML = '';
+            messages.forEach(m => {
+                const div = document.createElement('div');
+                div.classList.add('mb-2');
+                div.innerHTML = `<strong>${m.senderEmail}:</strong> ${m.content} <br/><small class="text-muted">${m.sentTime}</small>`;
+                list.appendChild(div);
+            });
         }
-    }
-</script>
+
+        async function sendMessage(event) {
+            event.preventDefault();
+            const content = document.getElementById('messageContent').value;
+            const weddingId = @((Model.Wedding != null) ? Model.Wedding.WeddingId.ToString() : "null");
+
+            if (weddingId === "null") return;
+
+            const response = await fetch('/CoupleDashboard/SendMessage', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ weddingId, content })
+            });
+
+            if (response.ok) {
+                document.getElementById('messageContent').value = '';
+                loadMessages();
+            }
+        }
+    </script>
 }
+
 
