@@ -27,6 +27,23 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Vendor" asp-action="Index">Vendor Catalog</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    Profile
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="/Profile/Edit">Edit Profile</a></li>
+                                    <li>
+                                        <form method="post" action="/Profile/Delete" onsubmit="return confirm('Are you sure you want to delete your account?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="dropdown-item text-danger">Delete Account</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                         @using Microsoft.AspNetCore.Identity
                         @inject SignInManager<IdentityUser> SignInManager
                         @inject UserManager<IdentityUser> UserManager

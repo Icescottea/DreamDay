@@ -57,7 +57,7 @@
                         </td>
                         <td>
                             <a class="btn btn-warning btn-sm" href="/Timeline/Edit/@e.EventId">Edit</a>
-                            <a class="btn btn-danger btn-sm" href="/Timeline/Delete/@e.EventId">Delete</a>
+                            <a asp-action="Delete" asp-route-id="@e.EventId" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>
                 }

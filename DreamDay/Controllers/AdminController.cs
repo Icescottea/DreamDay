@@ -49,6 +49,8 @@ namespace DreamDay.Controllers
         }
 
         // Delete Vendor
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteVendor(int id)
         {
             var vendor = await _context.Vendors.FindAsync(id);
@@ -92,6 +94,22 @@ namespace DreamDay.Controllers
             ViewBag.WeddingCount = weddings.Count;
 
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return RedirectToAction(nameof(ManageUsers));
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
         }
 
     }

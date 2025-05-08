@@ -2,42 +2,57 @@
 
 @{
     ViewData["Title"] = "Edit Guest";
+    var tables = ViewBag.Tables as List<DreamDay.Models.WeddingTable>;
 }
 
 <div class="container my-5">
     <h1 class="text-center mb-4">Edit Guest</h1>
 
-    <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="GuestId" />
-        <input type="hidden" asp-for="WeddingId" />
+    @using (Html.BeginForm("Edit", "GuestManagement", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.GuestId)
+        @Html.HiddenFor(m => m.WeddingId)
 
         <div class="mb-3">
-            <label asp-for="Name" class="form-label">Name</label>
-            <input asp-for="Name" class="form-control" required />
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", required = "required" })
         </div>
 
         <div class="mb-3">
-            <label asp-for="Email" class="form-label">Email</label>
-            <input asp-for="Email" class="form-control" />
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
         </div>
 
         <div class="mb-3">
-            <label asp-for="RSVPStatus" class="form-label">RSVP Status</label>
-            <select asp-for="RSVPStatus" class="form-select">
-                <option value="Pending">Pending</option>
-                <option value="Accepted">Accepted</option>
-                <option value="Declined">Declined</option>
-            </select>
+            @Html.LabelFor(m => m.RSVPStatus)
+            @Html.DropDownListFor(m => m.RSVPStatus,
+                     new SelectList(new[] { "Pending", "Accepted", "Declined" }, Model.RSVPStatus),
+                     "Select RSVP Status",
+                     new { @class = "form-select" })
         </div>
 
         <div class="mb-3">
-            <label asp-for="MealPreference" class="form-label">Meal Preference</label>
-            <input asp-for="MealPreference" class="form-control" />
+            @Html.LabelFor(m => m.MealPreference)
+            @Html.TextBoxFor(m => m.MealPreference, new { @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.SeatNumber)
+            @Html.TextBoxFor(m => m.SeatNumber, new { @class = "form-control", type = "number", min = 1 })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.TableId)
+            @Html.DropDownListFor(m => m.TableId,
+                     new SelectList(tables, "TableId", "TableName", Model.TableId),
+                     "Select Table",
+                     new { @class = "form-select" })
         </div>
 
         <div class="text-center">
             <button type="submit" class="btn btn-primary">Save Changes</button>
             <a href="/GuestManagement" class="btn btn-secondary">Cancel</a>
         </div>
-    </form>
+    }
 </div>

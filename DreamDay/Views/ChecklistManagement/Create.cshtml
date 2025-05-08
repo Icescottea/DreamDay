@@ -2,54 +2,48 @@
 
 @{
     ViewData["Title"] = "Add New Task";
-    var vendorCategories = ViewBag.VendorCategories as List<string>;
+    var categories = ViewBag.Categories as List<string>;
+    var vendors = ViewBag.Vendors as List<DreamDay.Models.Vendor>;
 }
 
 <div class="container my-5">
     <h1 class="text-center mb-4">Add New Task</h1>
 
     <form asp-action="Create" method="post">
-        <div class="form-group mb-3">
-            <label asp-for="Title" class="form-label">Task Name</label>
-            <input asp-for="Title" class="form-control" required />
+        <input type="hidden" asp-for="WeddingId" value="@ViewBag.WeddingId" />
+        <div class="mb-3">
+            <label>Title</label>
+            <input asp-for="Title" class="form-control" />
         </div>
 
-        <div class="form-group mb-3">
-            <label class="form-label">Vendor Category</label>
-            <select asp-for="VendorCategory" id="vendorCategorySelect" class="form-control" required onchange="fetchVendorsByCategory()">
+        <div class="mb-3">
+            <label>Vendor Category</label>
+            <select asp-for="VendorCategory" class="form-control">
                 <option value="">Select Category</option>
-                @foreach (var category in vendorCategories)
+                @foreach (var category in categories)
                 {
                     <option value="@category">@category</option>
                 }
             </select>
         </div>
 
-        <input type="hidden" name="WeddingId" value="@ViewBag.WeddingId" />
-
-        <div class="form-group mb-3">
-            <label class="form-label">Select Vendor</label>
-            <select asp-for="VendorId" id="vendorSelect" class="form-control">
+        <div class="mb-3">
+            <label>Vendor</label>
+            <select asp-for="VendorId" class="form-control">
                 <option value="">Select Vendor</option>
-                @if (ViewBag.InitialVendors != null)
+                @foreach (var vendor in vendors)
                 {
-                    foreach (var vendor in ViewBag.InitialVendors)
-                    {
-                        <option value="@vendor.VendorId" selected="@(Model.VendorId == vendor.VendorId)">
-                            @vendor.Name
-                        </option>
-                    }
+                    <option value="@vendor.VendorId">@vendor.Name</option>
                 }
             </select>
-
         </div>
 
-        <div class="form-group mb-3">
-            <label asp-for="DueDate" class="form-label">Due Date</label>
+        <div class="mb-3">
+            <label>Due Date</label>
             <input asp-for="DueDate" type="date" class="form-control" />
         </div>
 
-        <button type="submit" class="btn btn-primary">Add Task</button>
+        <button type="submit" class="btn btn-primary">Add</button>
     </form>
 </div>
 

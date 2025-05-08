@@ -18,6 +18,12 @@ builder.Services.AddTransient<IEmailSender, DreamDay.Services.FakeEmailSender>()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<EnsureUserExistsAttribute>();
+});
+
+
 var app = builder.Build();
  
 // Configure the HTTP request pipeline.

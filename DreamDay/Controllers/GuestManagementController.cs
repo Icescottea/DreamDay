@@ -36,7 +36,8 @@ namespace DreamDay.Controllers
                 .Where(t => t.WeddingId == wedding.WeddingId)
                 .ToListAsync();
 
-            ViewBag.Tables = tables; // Pass tables to view
+            ViewBag.Tables = tables;
+            ViewBag.WeddingId = wedding.WeddingId;
             return View(guests);
         }
 
@@ -44,21 +45,17 @@ namespace DreamDay.Controllers
         public async Task<IActionResult> Create()
         {
             var user = await _userManager.GetUserAsync(User);
-
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            if (user == null) return RedirectToAction("Login", "Account");
 
             var wedding = await _context.Weddings.FirstOrDefaultAsync(w => w.CoupleId == user.Id);
-
-            if (wedding == null)
-            {
-                return RedirectToAction("Index");
-            }
+            if (wedding == null) return RedirectToAction("Index");
 
             ViewBag.WeddingId = wedding.WeddingId;
-            return View();
+            ViewBag.Tables = await _context.WeddingTables
+                .Where(t => t.WeddingId == wedding.WeddingId)
+                .ToListAsync();
+
+            return View(new Guest { WeddingId = wedding.WeddingId });
         }
 
         // POST: GuestManagement/Create
@@ -66,14 +63,30 @@ namespace DreamDay.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guest guest)
         {
-            if (ModelState.IsValid)
+            Console.WriteLine("POST Create() hit");
+            if (!ModelState.IsValid)
             {
-                _context.Add(guest);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Console.WriteLine("ModelState is INVALID");
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
+                    }
+                }
+                ViewBag.Tables = await _context.WeddingTables
+                    .Where(t => t.WeddingId == guest.WeddingId)
+                    .ToListAsync();
+
+                return View(guest);
             }
-            return View(guest);
+
+            Console.WriteLine("ModelState is VALID — saving...");
+            _context.Guests.Add(guest);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
+
 
         // GET: GuestManagement/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -89,6 +102,10 @@ namespace DreamDay.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.Tables = await _context.WeddingTables
+                .Where(t => t.WeddingId == guest.WeddingId)
+                .ToListAsync();
 
             return View(guest);
         }
@@ -161,48 +178,72 @@ namespace DreamDay.Controllers
         public async Task<IActionResult> AssignTable(int guestId, int? tableId)
         {
             var guest = await _context.Guests.FindAsync(guestId);
-            if (guest == null)
-            {
-                return NotFound();
-            }
+            if (guest == null) return NotFound();
 
             if (tableId == null)
             {
-                // Unassign guest from any table
                 guest.TableId = null;
                 _context.Update(guest);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            // Check table capacity
             var table = await _context.WeddingTables.FindAsync(tableId);
-            if (table == null)
-            {
-                return NotFound();
-            }
+            if (table == null) return NotFound();
 
-            // Calculate total seats already taken at this table
             var currentSeats = await _context.Guests
-                .Where(g => g.TableId == table.TableId && g.GuestId != guest.GuestId) // exclude the guest being reassigned
-                .SumAsync(g => (int?)g.NumberOfPeople) ?? 0;
+                .Where(g => g.TableId == table.TableId && g.GuestId != guest.GuestId)
+                .SumAsync(g => (int?)g.SeatNumber) ?? 0;
 
             int availableSeats = table.MaxSeats - currentSeats;
 
-            if (guest.NumberOfPeople > availableSeats)
+            if (guest.SeatNumber > availableSeats)
             {
                 TempData["ErrorMessage"] = $"Not enough seats available at {table.TableName}. Only {availableSeats} seat(s) left.";
                 return RedirectToAction(nameof(Index));
             }
 
-            // Assign guest to table
             guest.TableId = tableId;
             _context.Update(guest);
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GenerateTables(int weddingId, int seatsPerTable, int tableCount)
+        {
+            for (int i = 1; i <= tableCount; i++)
+            {
+                var table = new WeddingTable
+                {
+                    WeddingId = weddingId,
+                    TableName = $"Table {i}",
+                    MaxSeats = seatsPerTable
+                };
+                _context.WeddingTables.Add(table);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetAvailableSeats(int tableId)
+        {
+            var table = await _context.WeddingTables.FindAsync(tableId);
+            if (table == null) return Json(new List<int>());
+
+            var takenSeats = await _context.Guests
+                .Where(g => g.TableId == tableId)
+                .Select(g => g.SeatNumber)
+                .ToListAsync();
+
+            var allSeats = Enumerable.Range(1, table.MaxSeats);
+            var availableSeats = allSeats.Except(takenSeats);
+
+            return Json(availableSeats);
+        }
 
     }
 }

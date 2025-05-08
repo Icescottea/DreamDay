@@ -44,74 +44,35 @@ namespace DreamDay.Controllers
             return View("~/Views/ChecklistManagement/Index.cshtml", checklistItems);
         }
 
-        public async Task<IActionResult> Create(int? weddingId)
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
             var user = await _userManager.GetUserAsync(User);
-
-            if (user == null)
-            { return RedirectToAction("Login", "Account"); }
-
-            Wedding wedding = null;
-
-            if (weddingId.HasValue)
-            {
-                wedding = await _context.Weddings.FirstOrDefaultAsync(w => w.WeddingId == weddingId.Value);
-            }
-            else
-            {
-                wedding = await _context.Weddings.FirstOrDefaultAsync(w => w.CoupleId == user.Id);
-            }
-
-            if (wedding == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            var wedding = await _context.Weddings.FirstOrDefaultAsync(w => w.CoupleId == user.Id);
+            if (wedding == null) return RedirectToAction("Index", "Home");
 
             ViewBag.WeddingId = wedding.WeddingId;
-
-            ViewBag.VendorCategories = _context.Vendors
-                .Select(v => v.Category)
-                .Distinct()
-                .ToList();
-
+            ViewBag.Categories = _context.Vendors.Select(v => v.Category).Distinct().ToList();
+            ViewBag.Vendors = new List<Vendor>();
             return View();
         }
 
-
-
-        // POST: ChecklistManagement/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ChecklistItem checklistItem)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(checklistItem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.Categories = _context.Vendors.Select(v => v.Category).Distinct().ToList();
+                ViewBag.Vendors = new List<Vendor>();
+                return View(checklistItem);
             }
 
-            // Repopulate Vendor Categories for dropdown
-            ViewBag.VendorCategories = _context.Vendors
-                .Select(v => v.Category)
-                .Distinct()
-                .ToList();
-
-            // Extra: If VendorCategory already selected, you can reload vendors matching that
-            if (!string.IsNullOrEmpty(checklistItem.VendorCategory))
-            {
-                ViewBag.InitialVendors = await _context.Vendors
-                    .Where(v => v.Category == checklistItem.VendorCategory)
-                    .ToListAsync();
-            }
-            else
-            {
-                ViewBag.InitialVendors = new List<Vendor>();
-            }
-
-            return View(checklistItem);
+            checklistItem.IsCompleted = false;
+            _context.ChecklistItems.Add(checklistItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
-
 
 
         // GET: ChecklistManagement/MarkComplete/5

@@ -9,14 +9,14 @@ namespace DreamDay.Models
         [Key]
         public int ItemId { get; set; }
         public int WeddingId { get; set; }
-        public string Title { get; set; }
+        public string? Title { get; set; }
         public bool IsCompleted { get; set; }
-        public DateTime DueDate { get; set; }  
+        public DateTime DueDate { get; set; }
 
-        public string VendorCategory { get; set; }  // nullable string
+        public string? VendorCategory { get; set; }  // nullable string
         public int? VendorId { get; set; }           // nullable int
 
         [ForeignKey("VendorId")]
-        public Vendor Vendor { get; set; }           // navigation property
+        public Vendor? Vendor { get; set; }           // navigation property
     }
 }

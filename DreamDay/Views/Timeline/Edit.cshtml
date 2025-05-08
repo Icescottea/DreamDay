@@ -8,46 +8,55 @@
 <div class="container my-5">
     <h1 class="text-center mb-4">Edit Timeline Event</h1>
 
-    <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="EventId" />
+    @using (Html.BeginForm("Edit", "Timeline", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.EventId)
+        @Html.HiddenFor(m => m.WeddingId)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group mb-3">
-            <label asp-for="Title" class="form-label">Event Title</label>
-            <input asp-for="Title" class="form-control" required />
+            @Html.LabelFor(m => m.Title)
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control", required = "required" })
         </div>
 
         <div class="form-group mb-3">
-            <label asp-for="Description" class="form-label">Description</label>
-            <textarea asp-for="Description" class="form-control"></textarea>
+            @Html.LabelFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
         </div>
 
         <div class="form-group mb-3">
-            <label asp-for="EventTime" class="form-label">Event Time</label>
-            <input asp-for="EventTime" type="datetime-local" class="form-control" required />
-        </div>
-
-        <div class="form-group mb-3">
-            <label class="form-label">Select Vendor (Optional)</label>
-            <select asp-for="VendorId" class="form-control">
-                <option value="">-- No Vendor --</option>
-                @foreach (var vendor in vendors)
+            @Html.LabelFor(m => m.EventTime)
+            @Html.TextBoxFor(m => m.EventTime, "{0:yyyy-MM-ddTHH:mm}", new
                 {
-                    <option value="@vendor.VendorId" selected="@(vendor.VendorId == Model.VendorId ? "selected" : null)">
-                        @vendor.Name
-                    </option>
-                }
-            </select>
+                    @class = "form-control",
+                    type = "datetime-local"
+                })
         </div>
 
         <div class="form-group mb-3">
-            <label asp-for="VendorArrivalTime" class="form-label">Vendor Arrival Time (Optional)</label>
-            <input asp-for="VendorArrivalTime" type="datetime-local" class="form-control" />
+            @Html.LabelFor(m => m.VendorId, "Select Vendor (Optional)")
+            @Html.DropDownListFor(m => m.VendorId,
+                     new SelectList(vendors, "VendorId", "Name", Model.VendorId),
+                     "-- No Vendor --",
+                     new { @class = "form-select" })
         </div>
 
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-    </form>
-</div>
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.VendorArrivalTime)
+            @Html.TextBoxFor(m => m.VendorArrivalTime, "{0:yyyy-MM-ddTHH:mm}", new
+                {
+                    @class = "form-control",
+                    type = "datetime-local"
+                })
+        </div>
 
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="@Url.Action("Index", "Timeline")" class="btn btn-secondary">Cancel</a>
+        </div>
+    }
+</div>
 
 @section Scripts {
     @{
