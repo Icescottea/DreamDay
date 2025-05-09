@@ -5,6 +5,10 @@
 
 <div class="container my-5 couple-dashboard-page">
     <h1 class="text-center mb-4 dashboard-title">Welcome to Your Wedding Dashboard</h1>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["SuccessMessage"]</div>
+    }
 
     <!-- Big Overview + Messaging Card -->
     <div class="overview-card card shadow-sm mb-5 p-4">
@@ -27,6 +31,15 @@
             <button class="message-toggle-btn ms-auto" onclick="toggleMessagePanel()">
                 <i class="fas fa-envelope"></i>
             </button>
+
+            <button class="message-toggle-btn ms-2" onclick="toggleOverviewPanel()">
+                <i class="fas fa-edit"></i>
+            </button>
+
+            <button class="message-toggle-btn ms-2" onclick="toggleAddOverviewPanel()">
+                <i class="fas fa-plus"></i>
+            </button>
+
         </div>
 
         <div id="messagePanel" style="display:none;" class="message-card-inner mt-3">
@@ -42,6 +55,47 @@
                 <button type="submit" class="btn btn-cream w-100">Send</button>
             </form>
         </div>
+
+        <div id="overviewPanel" style="display:none;" class="message-card-inner mt-3">
+            <h5 class="text-center mb-3">Edit Wedding Overview</h5>
+            <form method="post" asp-controller="CoupleDashboard" asp-action="UpdateOverview">
+                <input type="hidden" name="WeddingId" value="@Model.Wedding?.WeddingId" />
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input class="form-control" name="Title" value="@Model.Wedding?.Title" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Date</label>
+                    <input class="form-control" name="WeddingDate" type="date" value="@Model.Wedding?.WeddingDate.ToString("yyyy-MM-dd")" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Venue</label>
+                    <input class="form-control" name="Venue" value="@Model.Wedding?.Venue" required />
+                </div>
+                <button type="submit" class="btn btn-cream w-100">Save</button>
+            </form>
+        </div>
+
+        <div id="addOverviewPanel" style="display:none;" class="message-card-inner mt-3">
+            <h5 class="text-center mb-3">Create Wedding Overview</h5>
+            <form method="post" asp-action="AddOverview" asp-controller="CoupleDashboard">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input class="form-control" name="Title" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Date</label>
+                    <input class="form-control" name="WeddingDate" type="date" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Venue</label>
+                    <input class="form-control" name="Venue" required />
+                </div>
+                <button type="submit" class="btn btn-cream w-100">Add Overview</button>
+            </form>
+        </div>
+
     </div>
 
     <!-- Four Small Cards Below -->
@@ -114,6 +168,16 @@
             } else {
                 panel.style.display = "none";
             }
+        }
+
+        function toggleOverviewPanel() {
+            const panel = document.getElementById('overviewPanel');
+            panel.style.display = (panel.style.display === "none") ? "block" : "none";
+        }
+
+        function toggleAddOverviewPanel() {
+            const panel = document.getElementById('addOverviewPanel');
+            panel.style.display = (panel.style.display === "none") ? "block" : "none";
         }
 
         async function loadMessages() {

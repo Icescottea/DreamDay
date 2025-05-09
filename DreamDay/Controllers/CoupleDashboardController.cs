@@ -104,5 +104,55 @@ namespace DreamDay.Controllers
             return Json(messages);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateOverview(int WeddingId, string Title, DateTime WeddingDate, string Venue)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Unauthorized();
+
+            var wedding = await _context.Weddings.FirstOrDefaultAsync(w => w.WeddingId == WeddingId && w.CoupleId == user.Id);
+            if (wedding == null) return NotFound();
+
+            wedding.Title = Title;
+            wedding.WeddingDate = WeddingDate;
+            wedding.Venue = Venue;
+
+            _context.Weddings.Update(wedding);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Wedding details updated.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOverview(string Title, DateTime WeddingDate, string Venue)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Unauthorized();
+
+            var existingWedding = await _context.Weddings.FirstOrDefaultAsync(w => w.CoupleId == user.Id);
+            if (existingWedding != null)
+            {
+                TempData["ErrorMessage"] = "Wedding overview already exists.";
+                return RedirectToAction("Index");
+            }
+
+            var newWedding = new Wedding
+            {
+                CoupleId = user.Id,
+                Title = Title,
+                WeddingDate = WeddingDate,
+                Venue = Venue
+            };
+
+            _context.Weddings.Add(newWedding);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Wedding overview created successfully.";
+            return RedirectToAction("Index");
+        }
+
     }
 }

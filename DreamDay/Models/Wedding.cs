@@ -11,6 +11,6 @@ namespace DreamDay.Models
         public string Title { get; set; }
         public DateTime WeddingDate { get; set; }
         public string Venue { get; set; }
-        public string PlannerId { get; set; }
+        public string? PlannerId { get; set; }
     }
 }
